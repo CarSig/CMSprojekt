@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styling/styles.css" />
+    <title>JSON, AJAX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="expires" content="0" />
+
+    <style>
+      form {
+        display: flex;
+      }
+      label {
+        display: table-row;
+      }
+      select,
+      form span,
+      input {
+        display: table-cell;
+        margin: 0.25em;
+      }
+
+      option {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="demo"></p>
+
+    <form id="myForm">
+      <label for="username"
+        ><span>Benutzername: </span
+        ><input type="text" id="username" name="username" required
+      /></label>
+
+      <label
+        ><span>zip code</span>
+        <input
+          type="text"
+          name="zip"
+          id="zip"
+          pattern="[0-9]{5,5}"
+          title="Must contain 5 numbers"
+          required
+      /></label>
+      <label
+        ><span>email</span>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          required
+      /></label>
+      <label for="password"
+        ><span>Passwort: </span
+        ><input
+          type="password"
+          id="password"
+          name="password"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"
+          required
+      /></label>
+      <label for="repeatPassword"
+        ><span>repeat Passwort: </span
+        ><input
+          type="password"
+          id="repeatPassword"
+          name="repeatPassword"
+          required
+      /></label>
+
+      <label>
+        <input type="checkbox" name="consent" id="consent" />
+        I give consent for the processing of my data
+      </label>
+
+      <label><span></span><input type="reset" /></label>
+      <label><span></span><input id="submit_btn" type="submit" /></label>
+    </form>
+
+    <!-- <p id="showusername"></p>
+    <p id="showpasswordhash"></p> -->
+    <p id="passwordsNotMatching"></p>
+    <p id="checkboxNotSelected"></p>
+    <!-- <button onclick="myFunction()">Redirect</button> -->
+
+    <script>
+      // document.querySelector("form").addEventListener("submit", function (e) {
+      //   var checked = document.getElementById("consent").checked;
+      //   var pass1 = document.getElementById("password").value;
+      //   var pass2 = document.getElementById("repeatPassword").value;
+
+      //   if (pass1 != pass2) {
+      //     e.preventDefault;
+      //     alert("Passwords not matching");
+
+      //     if (!checked) {
+      //       alert("Please give consent for processing data");
+
+      //       if (pass1 == pass2 && checked == true) {
+
+      var myObj = JSON.parse(event.target.responseText);
+
+      window.addEventListener("load", function () {
+        function sendData() {
+          console.log(12);
+          const XHR = new XMLHttpRequest();
+          XHR.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              window.location.href = "login.php";
+            }
+          };
+
+          const FD = new FormData(FORM);
+          myObj();
+          function myObj() {
+            XHR.addEventListener("load", function (event) {
+              console.log(event.target.responseText);
+
+              var myObj = JSON.parse(event.target.responseText);
+              return myObj;
+            });
+          }
+
+          XHR.addEventListener("error", function (event) {
+            document.getElementById("demo").innerHTML =
+              "Oops! Something went wrong.";
+          });
+
+          // Set up our request
+          XHR.open("POST", "registration.php", true);
+
+          // The data sent is what the user provided in the form
+          XHR.send(FD);
+        }
+
+        // Access the form element...
+        const FORM = document.getElementById("myForm");
+
+        // ...and take over its submit event.
+        FORM.addEventListener("submit", function (event) {
+          event.preventDefault();
+          sendData();
+        });
+      });
+
+      //       }
+      //     }
+      //   }
+      // });
+    </script>
+
+    <script>
+      function myFunction() {
+        location.replace("https://www.w3schools.com");
+      }
+    </script>
+  </body>
+</html>
